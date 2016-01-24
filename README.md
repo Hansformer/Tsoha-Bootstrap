@@ -1,10 +1,10 @@
-# Tietokantasovelluksen esittelysivu
+# Tietokantasovellus Kevät 2016
 
 Yleisiä linkkejä:
 
-* [Linkki sovellukseeni](https://www.cs.helsinki.fi)
+* [Linkki sovellukseeni](http://xhexhexh.users.cs.helsinki.fi/tsoha2016/)
 * [Linkki dokumentaatiooni](https://www.github.com)
 
 ## Työn aihe
 
-Laita tähän aihekuvaus tai [linkki valmiiseen aiheeseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Pokemon-kanta.html) 
+[Ystävänvälityspalvelu](https://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Ystavanvalityspalvelu.html) 
