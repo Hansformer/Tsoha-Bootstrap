@@ -3,7 +3,7 @@
 Yleisiä linkkejä:
 
 * [Linkki sovellukseeni](http://xhexhexh.users.cs.helsinki.fi/tsoha2016/)
-* [Linkki dokumentaatiooni](https://www.github.com)
+* [Linkki dokumentaatiooni](https://github.com/Hansformer/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
 ## Työn aihe
 
