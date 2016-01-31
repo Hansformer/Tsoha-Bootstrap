@@ -8,3 +8,15 @@
   max-width: 1200px;
   margin: 0px auto;
 }
+
+
+#content{
+    background-color: white;
+    min-height: 500px;
+}
+
+#navigation{
+    padding-top: 15px;
+    border-bottom: thin solid;
+    border-bottom-color: pink;
+}
