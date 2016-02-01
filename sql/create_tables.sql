@@ -1,37 +1,37 @@
 -- Lisää CREATE TABLE lauseet tähän tiedostoon
 CREATE TABLE Asiakas
 (
-	AsiakasID SERIAL PRIMARY KEY,
-	Nimimerkki varchar(32) NOT NULL UNIQUE,
-	Salasana varchar(64) NOT NULL,
-	Email varchar(64) NOT NULL,
-	Syntymapaiva DATE,
-	Sukupuoli boolean,
-	Paikkakunta varchar(128) NOT NULL, 
-	Yllapitaja boolean DEFAULT FALSE,
-	Paritele boolean DEFAULT FALSE
+	asiakasid serial PRIMARY KEY,
+	nimimerkki varchar(32) NOT NULL UNIQUE,
+	salasana varchar(64) NOT NULL,
+	email varchar(64) NOT NULL,
+	syntymapaiva DATE,
+	sukupuoli boolean,
+	paikkakunta varchar(128) NOT NULL, 
+	yllapitaja boolean DEFAULT FALSE,
+	paritele boolean DEFAULT FALSE
 );
 
 CREATE TABLE Viesti
 (
-	ViestiID integer SERIAL PRIMARY KEY,
-	LahettavaID integer references Asiakas(AsiakasID),
-	VastaanottavaID integer references Asiakas(AsiakasID),
-	Sisalto varchar(512) NOT NULL,
-	Lahetysaika timestamp NOT NULL
+	viestiID serial PRIMARY KEY,
+	lahettavaID integer references Asiakas(asiakasid),
+	vastaanottavaID integer references Asiakas(asiakasid),
+	sisalto varchar(512) NOT NULL,
+	lahetysaika timestamp NOT NULL
 );
 
-CREATE TABLE EsittelysivuJulkinen
+CREATE TABLE Esittelysivujulkinen
 (
-	SivuID integer SERIAL PRIMARY KEY,
-	AsiakasID integer references  Asiakas(AsiakasID),
-	Sisalto varchar(1024) NOT NULL
+	sivuid serial PRIMARY KEY,
+	asiakasid integer references  Asiakas(asiakasid),
+	sisalto varchar(1024) NOT NULL
 );
 
-CREATE TABLE EsittelysivuSalainen
+CREATE TABLE Esittelysivusalainen
 (
-	SivuID integer SERIAL PRIMARY KEY,
-	AsiakasID integer references Asiakas(AsiakasID),
-	KenelleID integer references Asiakas(AsiakasID),
-	Sisalto varchar(256) NOT NULL
+	sivuid serial PRIMARY KEY,
+	asiakasid integer references Asiakas(asiakasid),
+	kenelleid integer references Asiakas(asiakasid),
+	sisalto varchar(256) NOT NULL
 );
