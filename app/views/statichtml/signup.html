@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Rekisteröidy</h1>
+
+<form>
+    <div class="form-group">
+        <label>Käyttäjätunnus</label>
+        <input type="text" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Sähköposti</label>
+        <input type="text" class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label>Salasana</label>
+      <input type="password" class="form-control">
+    </div>
+    <div class="form-group">
+        <p><label>Etunimi</label>
+            <input type="text" class="form-control"></p>
+        <p><label>Sukunimi</label>
+            <input type="text" class="form-control"></p>
+        <label>Sukupuoli</label>
+        <p><input type="radio" name="sex" value="male">Mies
+            <input type="radio" name="sex" value="female">Nainen</p>
+    </div>
+    
+    
+</form>
+
+{% endblock %}
