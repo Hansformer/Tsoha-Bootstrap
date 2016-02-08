@@ -10,11 +10,15 @@ $routes->get('/login', function() {
 });
 
 $routes->get('/signup', function() {
-    HelloWorldController::signup();
+    AsiakasController::signup();
+});
+
+$routes->post('/signup', function(){
+    AsiakasController::store();
 });
 
 $routes->get('/browse', function() {
-    HelloWorldController::browse();
+    AsiakasController::browse();
 });
 
 $routes->get('/hiekkalaatikko', function() {

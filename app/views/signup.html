@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Rekisteröidy</h1>
+
+<form method="post" action="{{base_path}}/signup">
+    <div class="form-group">
+        <label>Nimimerkki</label>
+        <input type="text" name="nimimerkki" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Salasana</label>
+        <input type="password" name="salasana" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Sähköposti</label>
+        <input type="email" name="email" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Sukupuoli</label>
+        <p><input type="radio" name="sukupuoli" value="true">Mies
+            <input type="radio" name="sukupuoli" value="false">Nainen</p>
+    </div>
+
+    <div class="form-group">
+        <label>Paikkakunta</label>
+        <p><input type="text" name="paikkakunta" class="form-control"></p>
+    </div>
+
+    <div class="form-group">
+        <label>Syntymäpäivä</label>
+        <p><input type="date" name="syntymapaiva" value="1998-12-31" class="form-control"></p>
+        <div>
+            <p><button type="submit" class="btn btn-primary">Rekisteröidy</button></p>
+        </div>
+</form>
+{% endblock %}
