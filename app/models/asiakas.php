@@ -4,10 +4,10 @@ Class Asiakas extends BaseModel {
 
     public $asiakasid, $nimimerkki, $salasana, $email, $syntymapaiva, $sukupuoli,
             $paikkakunta, $yllapitaja, $paritele;
-    
 
     public function __construct($attributes) {
         parent::__construct($attributes);
+        $this->validators = array('validate_name', 'validate_password');
     }
 
     public static function all() {
@@ -53,16 +53,67 @@ Class Asiakas extends BaseModel {
         }
         return null;
     }
-    
-    public function save(){
+
+    public function save() {
         // Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon
-    $query = DB::connection()->prepare('INSERT INTO Asiakas (nimimerkki, salasana, email, syntymapaiva, sukupuoli, paikkakunta) VALUES (:nimimerkki, :salasana, :email, :syntymapaiva, :sukupuoli, :paikkakunta) RETURNING asiakasid');
-    // Muistathan, että olion attribuuttiin pääse syntaksilla $this->attribuutin_nimi
-    $query->execute(array('nimimerkki' => $this->nimimerkki, 'salasana' => $this->salasana, 'email' => $this->email, 'syntymapaiva' => $this->syntymapaiva, 'sukupuoli' => $this->sukupuoli, 'paikkakunta' => $this->paikkakunta));
-    // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
-    $row = $query->fetch();
-    // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
-    $this->id = $row['asiakasid'];
+        $query = DB::connection()->prepare('INSERT INTO Asiakas (nimimerkki, salasana, email, syntymapaiva, sukupuoli, paikkakunta) VALUES (:nimimerkki, :salasana, :email, :syntymapaiva, :sukupuoli, :paikkakunta) RETURNING asiakasid');
+        // Muistathan, että olion attribuuttiin pääse syntaksilla $this->attribuutin_nimi
+        $query->execute(array('nimimerkki' => $this->nimimerkki, 'salasana' => $this->salasana, 'email' => $this->email, 'syntymapaiva' => $this->syntymapaiva, 'sukupuoli' => $this->sukupuoli, 'paikkakunta' => $this->paikkakunta));
+        // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
+        $row = $query->fetch();
+        // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
+        $this->id = $row['asiakasid'];
+    }
+
+    public function validate_name() {
+        $errors = array();
+
+        $nameflag = $this->nameAlreadyExists($this->nimimerkki);
+
+        if ($nameflag == true) {
+            $errors[] = 'Nimimerkki on jo olemassa';
+        }
+
+        if ($this->nimimerkki == '' || $this->nimimerkki == null) {
+            $errors[] = 'Nimi ei saa olla tyhjä!';
+        }
+        if (strlen($this->nimimerkki) < 3) {
+            $errors[] = 'Nimen pituuden pitää olla vähintään kolme merkkiä!';
+        }
+        return $errors;
+    }
+
+    public function validate_password() {
+        $errors = array();
+        if ($this->salasana == '' || $this->salasana == null) {
+            $errors[] = 'Salasana ei saa olla tyhjä!';
+        }
+        if (strlen($this->salasana) < 5) {
+            $errors[] = 'Salasanan pituuden pitää olla vähintään 5 merkkiä!';
+        }
+        return $errors;
+    }
+
+    public function nameAlreadyExists($nimimerkki) {
+        $query = DB::connection()->prepare("SELECT * FROM Asiakas WHERE Nimimerkki = :nimimerkki");
+        $query->execute(array('nimimerkki' => $nimimerkki));
+        $result = $query->fetch();
+
+        if ($result == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function deleteByID($asiakasid) {
+        $query = DB::connection()->prepare("DELETE FROM Asiakas WHERE asiakasid = :asiakasid");
+        $query->execute(array('asiakasid' => $asiakasid));
+    }
+    
+    public function updatePassword($newPassword){
+        $query = DB::connection()->prepare("UPDATE Asiakas SET salasana = :salasana" . "WHERE asiakasid = :asiakasid");
+        $query->execute(array('salasana' => $newPassword, 'asiakasid' => $this->asiakasid));
     }
 
 }

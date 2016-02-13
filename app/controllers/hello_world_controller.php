@@ -30,6 +30,12 @@ class HelloWorldController extends BaseController {
         Kint::dump($asiakas);
         Kint::dump($viestit);
         Kint::dump($viesti);
+        
+        
+         $asiakas2 = new Asiakas(array('nimimerkki' => 'as', 'salasana' => '1234', 'email' => 'a@a.fi', 'syntymapaiva' => '1992-01-01', 'sukupuoli' => true, 'paikkakunta' => 'Bönde', 'yllapitaja' => false, 'paritele' => false));
+         $errors = $asiakas2->errors();
+         
+         Kint::dump($errors);
     }
 
 }

@@ -20,7 +20,10 @@ class AsiakasController extends BaseController{
                 'paikkakunta' => $params['paikkakunta']
             ));
         
-        
+        if($asiakas->checkIfNameExists($params['nimimerkki']) == false) {
+            
+        }
+
         $asiakas->save();
         
         Redirect::to('/browse', array('message' => 'Käyttäjä luotu!'));
