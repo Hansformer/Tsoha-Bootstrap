@@ -8,3 +8,5 @@ Yleisiä linkkejä:
 ## Työn aihe
 
 [Ystävänvälityspalvelu](https://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Ystavanvalityspalvelu.html) 
+
+- Testikäyttäjä: Admin - admin (merkkikoolla on väliä)

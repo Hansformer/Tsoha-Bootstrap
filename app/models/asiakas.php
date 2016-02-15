@@ -110,17 +110,45 @@ Class Asiakas extends BaseModel {
         $query = DB::connection()->prepare("DELETE FROM Asiakas WHERE asiakasid = :asiakasid");
         $query->execute(array('asiakasid' => $asiakasid));
     }
-	
-	public function destroy() {
-		$query = DB::connection()->prepare("DELETE FROM Asiakas WHERE asiakasid = :asiakasid");
-		$query->execute(array('asiakasid' => $this->asiakasid));
-	}
-    
-    public function updatePassword($newPassword){
+
+    public function destroy() {
+        $query = DB::connection()->prepare("DELETE FROM Asiakas WHERE asiakasid = :asiakasid");
+        $query->execute(array('asiakasid' => $this->asiakasid));
+    }
+
+    public function updatePassword($newPassword) {
         $query = DB::connection()->prepare("UPDATE Asiakas SET salasana = :salasana" . "WHERE asiakasid = :asiakasid");
         $query->execute(array('salasana' => $newPassword, 'asiakasid' => $this->asiakasid));
     }
-	
-	public function update();
+
+    public function update() {
+        // Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon
+        $query = DB::connection()->prepare('UPDATE Asiakas (nimimerkki, salasana, email, syntymapaiva, sukupuoli, paikkakunta) VALUES (:nimimerkki, :salasana, :email, :syntymapaiva, :sukupuoli, :paikkakunta) RETURNING asiakasid');
+        $query->execute(array('nimimerkki' => $this->nimimerkki, 'salasana' => $this->salasana, 'email' => $this->email, 'syntymapaiva' => $this->syntymapaiva, 'sukupuoli' => $this->sukupuoli, 'paikkakunta' => $this->paikkakunta));
+        $row = $query->fetch();
+    }
+
+    public static function authenticate($nimimerkki, $salasana) {
+        $query = DB::connection()->prepare('SELECT * FROM Asiakas WHERE nimimerkki = :nimimerkki AND salasana = :salasana LIMIT 1');
+        $query->execute(array('nimimerkki' => $nimimerkki, 'salasana' => $salasana));
+
+        $row = $query->fetch();
+
+        if ($row) {
+            $asiakas = new Asiakas(array(
+                'asiakasid' => $row['asiakasid'],
+                'nimimerkki' => $row['nimimerkki'],
+                'salasana' => $row['salasana'],
+                'email' => $row['email'],
+                'syntymapaiva' => $row['syntymapaiva'],
+                'sukupuoli' => $row['sukupuoli'],
+                'paikkakunta' => $row['paikkakunta'],
+                'yllapitaja' => $row['yllapitaja'],
+                'paritele' => $row['paritele']
+            ));
+            return $asiakas;
+        }
+        return null;
+    }
 
 }
