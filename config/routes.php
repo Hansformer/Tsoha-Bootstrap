@@ -21,6 +21,10 @@ $routes->get('/browse', function() {
     AsiakasController::browse();
 });
 
+$routes->get('/profile') {
+	AsiakasController::viewProfile();
+}
+
 $routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
 });

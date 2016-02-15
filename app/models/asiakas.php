@@ -110,10 +110,17 @@ Class Asiakas extends BaseModel {
         $query = DB::connection()->prepare("DELETE FROM Asiakas WHERE asiakasid = :asiakasid");
         $query->execute(array('asiakasid' => $asiakasid));
     }
+	
+	public function destroy() {
+		$query = DB::connection()->prepare("DELETE FROM Asiakas WHERE asiakasid = :asiakasid");
+		$query->execute(array('asiakasid' => $this->asiakasid));
+	}
     
     public function updatePassword($newPassword){
         $query = DB::connection()->prepare("UPDATE Asiakas SET salasana = :salasana" . "WHERE asiakasid = :asiakasid");
         $query->execute(array('salasana' => $newPassword, 'asiakasid' => $this->asiakasid));
     }
+	
+	public function update();
 
 }
