@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Listaus käyttäjistä</div>
+     <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Käyttäjänimi</th>
+        <th>Paikkakunta</th>
+        <th>Syntymäpäivä</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for asiakas in asiakkaat %}
+        <tr>
+          <td><a href="{{base_path}}/browse/{{asiakas.id}}">{{asiakas.nimimerkki}}</td>
+          <td>{{asiakas.paikkakunta}}</td>
+          <td>{{asiakas.syntymapaiva}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="panel panel-default">
+    <div class="panel-heading">Profiilisi {{asiakas.nimimerkki}}</div>
+    <div class="panel-body">
+        <ul>
+            <li>Sukupuoli: {{asiakas.sukupuoli}}<br></li>
+            <li>Syntymäpäivä: {{asiakas.syntymapaiva}}<br></li>
+            <li>Paikkakunta: {{asiakas.paikkakunta}}<br></li>
+        </ul>
+        <p><a href="{{base_path}}/profile/edit"class="btn btn-primary">Muokkaa profiilitietojasi</a></p>
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}

@@ -4,8 +4,12 @@ function check_logged_in() {
     BaseController::check_logged_in();
 }
 
+$routes->get('/hiekkalaatikko', function() {
+    HelloWorldController::sandbox();
+});
+
 $routes->get('/', function() {
-    HelloWorldController::index();
+    MainController::index();
 });
 
 $routes->get('/login', function() {
@@ -24,14 +28,33 @@ $routes->post('/signup', function() {
     AsiakasController::store();
 });
 
-$routes->get('/browse', function() {
+$routes->get('/browse', 'check_logged_in', function() {
     AsiakasController::browse();
 });
 
-$routes->get('/profile/:id', 'check_logged_in', function($id) {
-    AsiakasController::viewProfile($id);
+$routes->get('/profile', 'check_logged_in', function() {
+    AsiakasController::viewProfile();
 });
 
-$routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::sandbox();
+$routes->post('/profiledeletion', 'check_logged_in', function() {
+    AsiakasController::deleteProfile();
+});
+
+$routes->get('/profile/edit', 'check_logged_in', function() {
+    AsiakasController::editProfile();
+});
+
+$routes->post('/profile/edit', 'check_logged_in', function() {
+    AsiakasController::updateProfile();
+});
+
+$routes->post('/logout', function() {
+    AsiakasController::logout();
+});
+
+
+// Viesti routes
+
+$routes->get('/messages', function() {
+    ViestiController::allMessages();
 });

@@ -70,9 +70,9 @@ Class Asiakas extends BaseModel {
 
         $nameflag = $this->nameAlreadyExists($this->nimimerkki);
 
-        if ($nameflag == true) {
-            $errors[] = 'Nimimerkki on jo olemassa';
-        }
+//        if ($nameflag == true) {
+//            $errors[] = 'Nimimerkki on jo olemassa';
+//        }
 
         if ($this->nimimerkki == '' || $this->nimimerkki == null) {
             $errors[] = 'Nimi ei saa olla tyhjä!';
@@ -116,11 +116,11 @@ Class Asiakas extends BaseModel {
         $query->execute(array('asiakasid' => $this->asiakasid));
     }
 
-    public function updatePassword($newPassword) {
-        $query = DB::connection()->prepare("UPDATE Asiakas SET salasana = :salasana" . "WHERE asiakasid = :asiakasid");
-        $query->execute(array('salasana' => $newPassword, 'asiakasid' => $this->asiakasid));
+    public function updateProfileInformation($params) {
+        $query = DB::connection()->prepare("UPDATE Asiakas SET salasana = :salasana, email = :email, syntymapaiva = :syntymapaiva, sukupuoli = :sukupuoli, paikkakunta = :paikkakunta" . "WHERE asiakasid = :asiakasid");
+        $query->execute(array('salasana' => $params['salasana'], 'email' => $params['email'], 'syntymapaiva' => $params['syntymapaiva'], 'sukupuoli' => $params['sukupuoli'], 'paikkakunta' => $params['paikkakunta'], 'asiakasid' => $this->asiakasid));
     }
-
+    
     public function update() {
         // Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon
         $query = DB::connection()->prepare('UPDATE Asiakas (nimimerkki, salasana, email, syntymapaiva, sukupuoli, paikkakunta) VALUES (:nimimerkki, :salasana, :email, :syntymapaiva, :sukupuoli, :paikkakunta) RETURNING asiakasid');
