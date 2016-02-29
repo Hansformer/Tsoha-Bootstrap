@@ -31,7 +31,7 @@ class AsiakasController extends BaseController {
             $asiakas->save();
             Redirect::to('/login', array('message' => 'Käyttäjä luotu!'));
         } else {
-            Redirect::to('/signup', array('message' => 'Virhe käyttäjää luodessa!'));
+            Redirect::to('/signup', array('errors' => $errors));
         }
     }
 
@@ -127,7 +127,7 @@ class AsiakasController extends BaseController {
             if (count($errors) > 0) {
                 View::make('asiakasviews/editprofile.html', array('errors' => $errors, 'asiakas' => $asiakas));
             } else {
-                $asiakas->updateProfileInformation($params);
+                $asiakas->updateProfileInformation();
                 Redirect::to('/profile', array('message' => 'Asiakastiedot on päivitetty.'));
             }
         } else {
@@ -154,6 +154,12 @@ class AsiakasController extends BaseController {
             $asiakas->update();
             Redirect::to('/profile', array('message' => 'Asiakastiedot on päivitetty.'));
         }
+    }
+    
+    public static function showProfile($asiakasid) {
+        $profileToShow = Asiakas::findByID($asiakasid);
+        
+        View::make('asiakasviews/showprofile.html', array('asiakas' => $profileToShow));
     }
 
     public static function logout() {

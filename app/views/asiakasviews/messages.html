@@ -3,25 +3,56 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">Listaus Viesteistä</div>
-     <table class="table table-striped table-bordered">
-    <thead>
-      <tr>
-        <th>Viesti</th>
-        <th>Lähetysaika</th>
-        <th>Sisältö</th>
-      </tr>
-    </thead>
+    <div class="row">
+        <div class="col-lg-5 col-md-5 col-sm-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">Lähetetyt</div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Vastaanottaja</th>
+                            <th>Lähetysaika</th>
+                            <th>Sisältö</th>
+                        </tr>
+                    </thead>
 
-    <tbody>
-      {% for viesti in viestit %}
-        <tr>
-          <td><a href="{{base_path}}/messages/{{viesti.id}}">{{viesti.lahettavaid}}</td>
-          <td>{{viesti.lahetysaika}}</td>
-          <td>{{viesti.sisalto}}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
+                    <tbody>
+                        {% for viesti in lahetetyt %}
+                        <tr>
+                            <td><a href="{{base_path}}/messages/{{viesti.id}}">{{viesti.vastaanottavaid}}</td>
+                            <td>{{viesti.lahetysaika}}</td>
+                            <td>{{viesti.sisalto}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-7 col-sm-7">
+            <div class="panel panel-default">
+                <div class="panel-heading">Vastaaotetut</div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Lähettäjä</th>
+                            <th>Lähetysaika</th>
+                            <th>Sisältö</th>
+                        </tr>
+                    </thead>
 
+                    <tbody>
+                        {% for viesti in vastaanotetut %}
+                        <tr>
+                            <td><a href="{{base_path}}/messages/{{viesti.id}}">{{viesti.lahettavaid}}</td>
+                            <td>{{viesti.lahetysaika}}</td>
+                            <td>{{viesti.sisalto}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

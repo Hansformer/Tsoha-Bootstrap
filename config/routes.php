@@ -32,6 +32,10 @@ $routes->get('/browse', 'check_logged_in', function() {
     AsiakasController::browse();
 });
 
+$routes->get('/browse/:asiakasid', 'check_logged_in', function($asiakasid) {
+AsiakasController::showProfile($asiakasid); 
+});
+
 $routes->get('/profile', 'check_logged_in', function() {
     AsiakasController::viewProfile();
 });
@@ -57,4 +61,8 @@ $routes->post('/logout', function() {
 
 $routes->get('/messages', function() {
     ViestiController::allMessages();
+});
+
+$routes->get('/message/:viestiid', function($viestiid){
+    ViestiController::showMessage($viestiid);
 });

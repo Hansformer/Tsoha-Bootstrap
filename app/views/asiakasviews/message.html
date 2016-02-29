@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="panel panel-default">
+    <div class="panel-heading">Viesti käyttäjältä {{lahettaja}}</div>
+    <div class="panel-body">
+        
+        <p>{{viesti.sisalto}}<br></p>
+
+        <p><a href="{{base_path}}/messages"class="btn btn-primary">Kaikki viestit</p>
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}

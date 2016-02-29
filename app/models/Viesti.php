@@ -25,6 +25,46 @@ class Viesti extends BaseModel{
         return $viestit;
     }
     
+    public static function sentMessages() {
+        $query = DB::connection()->prepare('SELECT v.viestiid AS viestiid, v.lahettavaid AS lahettavaid, a.nimimerkki AS vastaanottavaid, v.sisalto AS sisalto, v.lahetysaika AS lahetysaika FROM Viesti AS v, Asiakas AS a WHERE v.lahettavaid = :lahettavaid AND v.vastaanottavaid = a.asiakasid ORDER BY lahetysaika DESC');
+        $query->execute(array('lahettavaid' => $_SESSION['asiakasid']));
+        $rows = $query->fetchAll();
+        
+        $viestit = array();
+        $i=0;
+        foreach ($rows as $row) {
+            $viestit[$i]=array(
+                'viestiid' => $row['viestiid'],
+                'lahettavaid' => $row['lahettavaid'],
+                'vastaanottavaid' => $row['vastaanottavaid'],
+                'sisalto' => $row['sisalto'],
+                'lahetysaika' => $row['lahetysaika']
+            );
+            $i++;
+        }
+        return $viestit;
+    }
+    
+    public static function receivedMessages() {
+        $query = DB::connection()->prepare('SELECT v.viestiid AS viestiid, a.nimimerkki AS lahettavaid, v.vastaanottavaid AS vastaanottavaid, v.sisalto AS sisalto, v.lahetysaika AS lahetysaika FROM Viesti AS v, Asiakas AS a WHERE v.vastaanottavaid = :vastaanottavaid AND v.lahettavaid = a.asiakasid ORDER BY lahetysaika DESC');
+        $query->execute(array('vastaanottavaid' => $_SESSION['asiakasid']));
+        $rows = $query->fetchAll();
+        
+        $viestit = array();
+        $i=0;
+        foreach ($rows as $row) {
+            $viestit[$i]=array(
+                'viestiid' => $row['viestiid'],
+                'lahettavaid' => $row['lahettavaid'],
+                'vastaanottavaid' => $row['vastaanottavaid'],
+                'sisalto' => $row['sisalto'],
+                'lahetysaika' => $row['lahetysaika']
+            );
+            $i++;
+        }
+        return $viestit;
+    }
+    
     public static function findByID($viestiid){
         $query = DB::connection()->prepare('SELECT * FROM Viesti WHERE viestiid = :viestiid LIMIT 1');
         $query->execute(array('viestiid' => $viestiid));

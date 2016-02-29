@@ -7,7 +7,7 @@ Class Asiakas extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->validators = array('validate_name', 'validate_password');
+        $this->validators = array('validate_name', 'validate_password', 'validate_paikkakunta', 'validate_sex');
     }
 
     public static function all() {
@@ -94,6 +94,25 @@ Class Asiakas extends BaseModel {
         return $errors;
     }
 
+    public function validate_paikkakunta() {
+        $errors = array();
+        if ($this->paikkakunta == '' || $this->paikkakunta == null) {
+            $errors[] = 'Paikkakunta ei saa olla tyhjä!';
+        }
+        if (strlen($this->paikkakunta) < 2) {
+            $errors[] = 'Paikkakunnan pitää olla vähintään 2 merkkiä ollakseen suomessa!';
+        }
+        return $errors;
+    }
+
+    public function validate_sex() {
+        $errors = array();
+        if ($this->sukupuoli == NULL || $this->sukupuoli == '' || ($this->sukupuoli != false && $this->sukupuoli != true) || ($this->sukupuoli != 0 && $this->sukupuoli != 1)) {
+            $errors[] = 'Valitse sukupuoli!';
+        }
+        return $errors;
+    }
+
     public function nameAlreadyExists($nimimerkki) {
         $query = DB::connection()->prepare("SELECT * FROM Asiakas WHERE Nimimerkki = :nimimerkki");
         $query->execute(array('nimimerkki' => $nimimerkki));
@@ -116,11 +135,13 @@ Class Asiakas extends BaseModel {
         $query->execute(array('asiakasid' => $this->asiakasid));
     }
 
-    public function updateProfileInformation($params) {
-        $query = DB::connection()->prepare("UPDATE Asiakas SET salasana = :salasana, email = :email, syntymapaiva = :syntymapaiva, sukupuoli = :sukupuoli, paikkakunta = :paikkakunta" . "WHERE asiakasid = :asiakasid");
-        $query->execute(array('salasana' => $params['salasana'], 'email' => $params['email'], 'syntymapaiva' => $params['syntymapaiva'], 'sukupuoli' => $params['sukupuoli'], 'paikkakunta' => $params['paikkakunta'], 'asiakasid' => $this->asiakasid));
-    }
+    public function updateProfileInformation() {
+        $query = DB::connection()->prepare("UPDATE Asiakas SET salasana = :salasana, email = :email, syntymapaiva = :syntymapaiva, sukupuoli = :sukupuoli, paikkakunta = :paikkakunta WHERE asiakasid = :asiakasid");
+        $query->execute(array('salasana' => $this->salasana, 'email' => $this->email, 'syntymapaiva' => $this->syntymapaiva, 'sukupuoli' => $this->sukupuoli, 'paikkakunta' => $this->paikkakunta, 'asiakasid' => $this->asiakasid));
     
+        $row = $query->fetch();
+    }
+
     public function update() {
         // Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon
         $query = DB::connection()->prepare('UPDATE Asiakas (nimimerkki, salasana, email, syntymapaiva, sukupuoli, paikkakunta) VALUES (:nimimerkki, :salasana, :email, :syntymapaiva, :sukupuoli, :paikkakunta) RETURNING asiakasid');

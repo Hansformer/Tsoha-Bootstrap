@@ -40,8 +40,8 @@
                     <ul class="nav navbar-nav">
                         <!-- Navigaation linkit -->
                         <li><a href="{{base_path}}">Etusivu</a></li>
-                        <li><a href="{{base_path}}/browse">Selaa profiileja</a></li>
                         {% if user_logged_in %}
+                        <li><a href="{{base_path}}/browse">Selaa profiileja</a></li>
                         <li><a href="{{base_path}}/profile">Profiilisi</a></li>
                         <li><a href="{{base_path}}/messages">Viestisi</a></li>
                         {% endif %}

@@ -8,6 +8,7 @@
       <tr>
         <th>Käyttäjänimi</th>
         <th>Paikkakunta</th>
+        <th>Sukupuoli</th>
         <th>Syntymäpäivä</th>
       </tr>
     </thead>
@@ -15,8 +16,9 @@
     <tbody>
       {% for asiakas in asiakkaat %}
         <tr>
-          <td><a href="{{base_path}}/browse/{{asiakas.id}}">{{asiakas.nimimerkki}}</td>
+          <td><a href="{{base_path}}/browse/{{asiakas.asiakasid}}">{{asiakas.nimimerkki}}</td>
           <td>{{asiakas.paikkakunta}}</td>
+          <td>{{asiakas.sukupuoli}}</td>
           <td>{{asiakas.syntymapaiva}}</td>
         </tr>
       {% endfor %}
