@@ -10,10 +10,10 @@
         <p>{{sivu.sisalto}}</p>
         <p>
             {% if asiakas.asiakasid == sivu.asiakasid %}
-            <a href="{{base_path}}/profile/editbio" class="btn btn-primary">Muokkkaa esittelysivua</a>
+            <a href="{{base_path}}/profile/bio/editbio" class="btn btn-primary">Muokkkaa esittelysivua</a>
             <a href="{{base_path}}/profile" class="btn btn-primary">Takaisin</a>
             {% else %}
-            <a href="{{base_path}}/browse/{{sivu.asiakasid}}"class="btn btn-primary">Käyttäjän profiiliin</a>
+            <a href="{{base_path}}/browse/{{asiakas.asiakasid}}" class="btn btn-primary">Käyttäjän profiiliin</a>
             {% endif %}
         </p>
     </div>

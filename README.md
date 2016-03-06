@@ -9,4 +9,6 @@ Yleisiä linkkejä:
 
 [Ystävänvälityspalvelu](https://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Ystavanvalityspalvelu.html) 
 
-- Testikäyttäjä: Admin - admin (merkkikoolla on väliä)
+- Testikäyttäjiä: Admin - admin (merkkikoolla on väliä), Killermaster - salainen
+
+- Projekti ei ole valmis, kaikkia dokumentoinnissa määriteltyjä ominaisuuksia ei ole toteutettu. Esittelysivut eivät toimi.

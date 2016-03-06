@@ -14,7 +14,8 @@ class EsittelysivuController extends BaseController {
     
     public static function showBio($asiakasid) {
         $page = Esittelysivu::findByAsiakasID($asiakasid);
-        View::make('asiakasviews/showBio.html', array('sivu' => $page));
+        $asiakas = Asiakas::findByID($page->asiakasid);
+        View::make('asiakasviews/showBio.html', array('sivu' => $page, 'asiakas' => $asiakas));
     }
     
     public static function editBio() {
