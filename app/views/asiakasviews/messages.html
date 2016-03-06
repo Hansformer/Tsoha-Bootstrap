@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for error in errors %}
+        <li>{{error}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
 <div class="panel panel-default">
     <div class="panel-heading">Listaus Viesteistä</div>
     <div class="row">
@@ -13,15 +23,17 @@
                             <th>Vastaanottaja</th>
                             <th>Lähetysaika</th>
                             <th>Sisältö</th>
+                            <th></th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {% for viesti in lahetetyt %}
                         <tr>
-                            <td><a href="{{base_path}}/messages/{{viesti.id}}">{{viesti.vastaanottavaid}}</td>
+                            <td>{{viesti.vastaanottavaid}}</td>
                             <td>{{viesti.lahetysaika}}</td>
-                            <td>{{viesti.sisalto}}</td>
+                            <td>{{viesti.sisalto[:40]}}</td>
+                            <td><a href="{{base_path}}/messages/{{viesti.viestiid}}">Näytä</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -37,15 +49,17 @@
                             <th>Lähettäjä</th>
                             <th>Lähetysaika</th>
                             <th>Sisältö</th>
+                            <th></th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {% for viesti in vastaanotetut %}
                         <tr>
-                            <td><a href="{{base_path}}/messages/{{viesti.id}}">{{viesti.lahettavaid}}</td>
+                            <td>{{viesti.lahettavaid}}</td>
                             <td>{{viesti.lahetysaika}}</td>
-                            <td>{{viesti.sisalto}}</td>
+                            <td>{{viesti.sisalto[:50]}}</td>
+                            <td><a href="{{base_path}}/messages/{{viesti.viestiid}}">Näytä</td>
                         </tr>
                         {% endfor %}
                     </tbody>

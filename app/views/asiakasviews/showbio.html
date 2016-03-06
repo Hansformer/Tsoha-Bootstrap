@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="panel panel-default">
+    {% if asiakas.asiakasid == sivu.asiakasid %}
+    <div class="panel-heading">Esittelysivusi</div>
+    {% else %}
+    <div class="panel-heading">Esittelysivu</div>
+    {% endif %}
+    <div class="panel-body">
+        <p>{{sivu.sisalto}}</p>
+        <p>
+            {% if asiakas.asiakasid == sivu.asiakasid %}
+            <a href="{{base_path}}/profile/editbio" class="btn btn-primary">Muokkkaa esittelysivua</a>
+            <a href="{{base_path}}/profile" class="btn btn-primary">Takaisin</a>
+            {% else %}
+            <a href="{{base_path}}/browse/{{sivu.asiakasid}}"class="btn btn-primary">Käyttäjän profiiliin</a>
+            {% endif %}
+        </p>
+    </div>
+
+
+</div>
+
+{% endblock %}

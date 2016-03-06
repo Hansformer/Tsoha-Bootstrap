@@ -31,7 +31,7 @@ class AsiakasController extends BaseController {
             $asiakas->save();
             Redirect::to('/login', array('message' => 'Käyttäjä luotu!'));
         } else {
-            Redirect::to('/signup', array('errors' => $errors));
+            Redirect::to('/signup', array('errors' => $errors, 'attributes' => $attributes));
         }
     }
 
@@ -124,6 +124,12 @@ class AsiakasController extends BaseController {
             $asiakas->sukupuoli = $params['sukupuoli'];
 
             $errors = $asiakas->errors();
+            
+            if (in_array('Nimimerkki on jo olemassa', $errors) && count($errors) == 1) {
+                $asiakas->updateProfileInformation();
+                Redirect::to('/profile', array('message' => 'Asiakastiedot on päivitetty.'));
+            }
+            
             if (count($errors) > 0) {
                 View::make('asiakasviews/editprofile.html', array('errors' => $errors, 'asiakas' => $asiakas));
             } else {

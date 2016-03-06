@@ -18,7 +18,12 @@
         <tr>
           <td><a href="{{base_path}}/browse/{{asiakas.asiakasid}}">{{asiakas.nimimerkki}}</td>
           <td>{{asiakas.paikkakunta}}</td>
-          <td>{{asiakas.sukupuoli}}</td>
+          {% if asiakas.sukupuoli == 0 %}
+          <td>Nainen</td>
+          {% endif %}
+          {% if asiakas.sukupuoli == 1 %}
+          <td>Mies</td>
+          {% endif %}
           <td>{{asiakas.syntymapaiva}}</td>
         </tr>
       {% endfor %}

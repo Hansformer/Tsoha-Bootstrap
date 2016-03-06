@@ -7,11 +7,11 @@ Class Asiakas extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->validators = array('validate_name', 'validate_password', 'validate_paikkakunta', 'validate_sex');
+        $this->validators = array('validate_name', 'validate_password', 'validate_paikkakunta', 'validate_sex', 'validate_email', 'validate_date');
     }
 
     public static function all() {
-        $query = DB::connection()->prepare('SELECT * FROM Asiakas');
+        $query = DB::connection()->prepare('SELECT * FROM Asiakas ORDER BY asiakasid');
         $query->execute();
         $rows = $query->fetchAll();
         $asiakkaat = array();
@@ -70,15 +70,19 @@ Class Asiakas extends BaseModel {
 
         $nameflag = $this->nameAlreadyExists($this->nimimerkki);
 
-//        if ($nameflag == true) {
-//            $errors[] = 'Nimimerkki on jo olemassa';
-//        }
+        if ($nameflag == true) {
+            $errors[] = 'Nimimerkki on jo olemassa';
+        }
 
         if ($this->nimimerkki == '' || $this->nimimerkki == null) {
             $errors[] = 'Nimi ei saa olla tyhjä!';
         }
         if (strlen($this->nimimerkki) < 3) {
             $errors[] = 'Nimen pituuden pitää olla vähintään kolme merkkiä!';
+        }
+
+        if (strlen($this->nimimerkki) > 32) {
+            $errors[] = 'Nimimerkki ei saa olla yli 32 merkkiä pitkä!';
         }
         return $errors;
     }
@@ -88,8 +92,8 @@ Class Asiakas extends BaseModel {
         if ($this->salasana == '' || $this->salasana == null) {
             $errors[] = 'Salasana ei saa olla tyhjä!';
         }
-        if (strlen($this->salasana) < 5) {
-            $errors[] = 'Salasanan pituuden pitää olla vähintään 5 merkkiä!';
+        if (!$this->stringLength(trim($this->salasana), 5, 64)) {
+            $errors[] = 'Salasanan pituuden pitää olla vähintään 5 merkkiä ja enintään 64!';
         }
         return $errors;
     }
@@ -99,8 +103,8 @@ Class Asiakas extends BaseModel {
         if ($this->paikkakunta == '' || $this->paikkakunta == null) {
             $errors[] = 'Paikkakunta ei saa olla tyhjä!';
         }
-        if (strlen($this->paikkakunta) < 2) {
-            $errors[] = 'Paikkakunnan pitää olla vähintään 2 merkkiä ollakseen suomessa!';
+        if (!$this->stringLength(trim($this->paikkakunta), 2, 32)) {
+            $errors[] = 'Paikkakunta pitää olla vähintään 2 merkkiä pitkä ja enintään 32!';
         }
         return $errors;
     }
@@ -111,6 +115,47 @@ Class Asiakas extends BaseModel {
             $errors[] = 'Valitse sukupuoli!';
         }
         return $errors;
+    }
+
+    public function validate_email() {
+        $errors = array();
+
+        if ($this->email == NULL || $this->email == '') {
+            $errors[] = 'Sähköposti ei saa olla tyhjä!';
+        }
+
+        if (!$this->stringLength(trim($this->email), 0, 64)) {
+            $errors[] = 'Sähköpostin maksimipituus on 64 merkkiä!';
+        }
+
+        return $errors;
+    }
+
+    public function validate_date() {
+        $errors = array();
+        
+        $dateflag = $this->checkValidDateFormat($this->syntymapaiva);
+        
+        if ($dateflag == false) {
+            $errors[] = 'Syntymäpäivä ei ole validi!';
+        }
+
+//        if (!is_numeric($dateArr[0]) || !is_numeric($dateArr[1]) || !is_numeric($dateArr[2])) {
+//            $errors[] = 'Syntymäpäivä ei ole numeerisessa muodossa!';
+//        }
+        
+        
+
+        if ($this->syntymapaiva == NULL) {
+            $errors[] = 'Syntymäpäivä ei saa olla tyhjä!';
+        }
+
+
+        return $errors;
+    }
+    
+    public function checkValidDateFormat($date) {
+        return (bool)strtotime($date);
     }
 
     public function nameAlreadyExists($nimimerkki) {
@@ -126,19 +171,41 @@ Class Asiakas extends BaseModel {
     }
 
     public function deleteByID($asiakasid) {
+        
+        $query = DB::connection()->prepare('UPDATE Viesti SET lahettavaid = null WHERE lahettavaid = :asiakasid');
+        $query->execute(array('asiakasid' => $asiakasid));
+        
+        $query = DB::connection()->prepare('UPDATE Viesti SET vastaanottavaid = null WHERE vastaanottavaid = :asiakasid');
+        $query->execute(array('asiakasid' => $asiakasid));
+        
+        $query = DB::connection()->prepare('UPDATE Esittelysivujulkinen SET asiakasid = null WHERE asiakasid = :asiakasid');
+        $query->execute(array('asiakasid' => $this->asiakasid));
+        
         $query = DB::connection()->prepare("DELETE FROM Asiakas WHERE asiakasid = :asiakasid");
         $query->execute(array('asiakasid' => $asiakasid));
     }
 
     public function destroy() {
+        $query = DB::connection()->prepare('UPDATE Viesti SET lahettavaid = null WHERE lahettavaid = :asiakasid');
+        $query->execute(array('asiakasid' => $this->asiakasid));
+        
+        $query = DB::connection()->prepare('UPDATE Viesti SET vastaanottavaid = null WHERE vastaanottavaid = :asiakasid');
+        $query->execute(array('asiakasid' => $this->asiakasid));
+        
+        $query = DB::connection()->prepare('UPDATE Esittelysivujulkinen SET asiakasid = null WHERE asiakasid = :asiakasid');
+        $query->execute(array('asiakasid' => $this->asiakasid));
+        
         $query = DB::connection()->prepare("DELETE FROM Asiakas WHERE asiakasid = :asiakasid");
         $query->execute(array('asiakasid' => $this->asiakasid));
+
+//        $query2 = DB::connection()->prepare("DELETE FROM Viesti WHERE lahettavaid = :asiakasid OR vastaanottavaid = :asiakasid");
+//        $query2->execute(array('asiakasid' => $this->asiakasid, 'asiakasid' => $this->asiakasid));
     }
 
     public function updateProfileInformation() {
         $query = DB::connection()->prepare("UPDATE Asiakas SET salasana = :salasana, email = :email, syntymapaiva = :syntymapaiva, sukupuoli = :sukupuoli, paikkakunta = :paikkakunta WHERE asiakasid = :asiakasid");
         $query->execute(array('salasana' => $this->salasana, 'email' => $this->email, 'syntymapaiva' => $this->syntymapaiva, 'sukupuoli' => $this->sukupuoli, 'paikkakunta' => $this->paikkakunta, 'asiakasid' => $this->asiakasid));
-    
+
         $row = $query->fetch();
     }
 

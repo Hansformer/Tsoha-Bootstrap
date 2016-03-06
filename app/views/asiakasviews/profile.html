@@ -4,11 +4,17 @@
     <div class="panel-heading">Profiilisi {{asiakas.nimimerkki}}</div>
     <div class="panel-body">
         <ul>
-            <li>Sukupuoli: {{asiakas.sukupuoli}}<br></li>
+            {% if asiakas.sukupuoli == 0 %}
+            <li>Sukupuoli: Nainen<br></li>
+            {% endif %}
+            {% if asiakas.sukupuoli == 1 %}
+            <li>Sukupuoli: Mies<br></li>
+            {% endif %}
             <li>Syntymäpäivä: {{asiakas.syntymapaiva}}<br></li>
             <li>Paikkakunta: {{asiakas.paikkakunta}}<br></li>
         </ul>
-        <p><a href="{{base_path}}/profile/edit"class="btn btn-primary">Muokkaa profiilitietojasi</a></p>
+        <p><a href="{{base_path}}/profile/bio"class="btn btn-primary">Esittelysivusi</a>
+            <a href="{{base_path}}/profile/edit"class="btn btn-primary">Muokkaa profiilitietojasi</a></p>
     </div>
 
 

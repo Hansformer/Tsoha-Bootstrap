@@ -4,11 +4,26 @@
     <div class="panel-heading">{{asiakas.nimimerkki}} profiili</div>
     <div class="panel-body">
         <ul>
-            <li>Sukupuoli: {{asiakas.sukupuoli}}<br></li>
+            {% if asiakas.sukupuoli == 0 %}
+            <li>Nainen</li>
+            {% endif %}
+            {% if asiakas.sukupuoli == 1 %}
+            <li>Mies</li>
+            {% endif %}
             <li>Syntymäpäivä: {{asiakas.syntymapaiva}}<br></li>
             <li>Paikkakunta: {{asiakas.paikkakunta}}<br></li>
         </ul>
-        <p><a href="{{base_path}}/browse/newmessage/{{asiaskas.asiakasid}}"class="btn btn-primary">Lähetä viesti</a></p>
+        <p><a href="{{base_path}}/browse/bio/{{asiakas.asiakasid}}"class="btn btn-primary">Esittelysivu</a></p>
+        <form method="post" action="{{base_path}}/messages/newmessage">
+            <input type="hidden" name="vastaanottavaid" value="{{asiakas.asiakasid}}">
+            <div class="form-group">
+                <label>Kirjoita viesti:</label>
+                <textarea class="form-control" name="sisalto"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Lähetä viesti</button>
+            </div>
+        </form>
     </div>
 
 

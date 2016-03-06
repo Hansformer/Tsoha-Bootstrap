@@ -27,5 +27,14 @@
 
       return $errors;
     }
+    
+    public function stringLength($string, $min, $max) {
+        if (strlen($string) < $min) {
+            return false;
+        } else if (strlen($string) > $max) {
+            return false;
+        }
+        return true;
+    }
 
   }

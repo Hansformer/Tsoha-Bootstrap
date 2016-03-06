@@ -59,10 +59,46 @@ $routes->post('/logout', function() {
 
 // Viesti routes
 
-$routes->get('/messages', function() {
+$routes->get('/messages', 'check_logged_in', function() {
     ViestiController::allMessages();
 });
 
-$routes->get('/message/:viestiid', function($viestiid){
+$routes->get('/messages/:viestiid', 'check_logged_in', function($viestiid){
     ViestiController::showMessage($viestiid);
+});
+
+
+$routes->get('/messages/newmessage', 'check_logged_in', function() {
+    ViestiController::newMessage();
+});
+
+$routes->post('/messages/newmessage', 'check_logged_in', function() {
+    ViestiController::store();
+});
+
+$routes->get('/messages/editmessage/:viestiid', 'check_logged_in', function($viestiid) {
+    ViestiController::editMessage($viestiid);
+});
+
+$routes->post('/messages/updatemessage', 'check_logged_in', function() {
+    ViestiController::updateMessage();
+});
+
+
+// esittelysivucontroller
+
+$routes->get('/profile/bio', 'check_logged_in', function() {
+    EsittelysivuController::ownBio();
+});
+
+$routes->get('/browse/bio/:asiakasid', 'check_logged_in', function($asiakasid) {
+    EsittelysivuController::showBio($asiakasid);
+});
+
+$routes->get('profile/editbio', 'check_logged_in', function() {
+    EsittelysivuController::editBio();
+});
+
+$routes->post('profile/updatebio', 'check_logged_in', function() {
+    EsittelysivuController::updateBio();
 });
