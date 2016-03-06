@@ -95,7 +95,7 @@ $routes->get('/browse/bio/:asiakasid', 'check_logged_in', function($asiakasid) {
     EsittelysivuController::showBio($asiakasid);
 });
 
-$routes->get('profile/editbio', 'check_logged_in', function() {
+$routes->get('profile/bio/editbio', 'check_logged_in', function() {
     EsittelysivuController::editBio();
 });
 
